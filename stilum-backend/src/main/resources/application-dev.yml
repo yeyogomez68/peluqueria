@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/stilum_citas
+    username: stilum
+    password: stilum_dev_pass
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    com.stilum: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.security: DEBUG
+
+stilum:
+  jwt:
+    secret: stilum-dev-secret-key-must-be-at-least-256-bits-long-for-HS256
+    expiration-ms: 86400000
