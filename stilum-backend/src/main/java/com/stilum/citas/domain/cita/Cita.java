@@ -67,6 +67,12 @@ public class Cita {
     @Column(name = "precio_cobrado", precision = 10, scale = 2)
     private BigDecimal precioCobrado;
 
+    @Column(name = "metodo_pago", length = 20)
+    private String metodoPago;
+
+    @Column(name = "comision_calculada", precision = 10, scale = 2)
+    private BigDecimal comisionCalculada;
+
     @Column(name = "qr_token", unique = true)
     private UUID qrToken = UUID.randomUUID();
 
@@ -120,9 +126,15 @@ public class Cita {
         cambiarEstado(CitaEstado.EN_CURSO, null, null);
     }
 
-    public void completar(BigDecimal precioCobrado) {
+    public void completar(BigDecimal precioCobrado, String metodoPago, BigDecimal comisionPorcentaje) {
         cambiarEstado(CitaEstado.COMPLETADA, null, null);
         this.precioCobrado = precioCobrado != null ? precioCobrado : servicio.getPrecio();
+        this.metodoPago = metodoPago;
+        if (comisionPorcentaje != null && this.precioCobrado != null) {
+            this.comisionCalculada = this.precioCobrado
+                    .multiply(comisionPorcentaje)
+                    .divide(new BigDecimal("100"), 2, java.math.RoundingMode.HALF_UP);
+        }
     }
 
     public void cancelar(String motivo, String canceladoPor) {

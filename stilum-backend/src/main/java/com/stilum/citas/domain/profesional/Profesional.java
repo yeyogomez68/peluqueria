@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,9 @@ public class Profesional {
     @Column(nullable = false)
     private boolean activo = true;
 
+    @Column(name = "comision_porcentaje", nullable = false, precision = 5, scale = 2)
+    private BigDecimal comisionPorcentaje = new BigDecimal("30.00");
+
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<HorarioProfesional> horarios = new ArrayList<>();
 
@@ -84,6 +88,15 @@ public class Profesional {
 
     public void activar()    { this.activo = true; }
     public void desactivar() { this.activo = false; }
+
+    public void actualizarComision(BigDecimal porcentaje) {
+        if (porcentaje == null || porcentaje.compareTo(BigDecimal.ZERO) < 0
+                || porcentaje.compareTo(new BigDecimal("100")) > 0) {
+            throw new com.stilum.citas.domain.shared.ReglaNegocioException(
+                    "COMISION_INVALIDA", "El porcentaje debe estar entre 0 y 100");
+        }
+        this.comisionPorcentaje = porcentaje;
+    }
 
     public UUID getTenantId() { return tenant.getId(); }
 }
