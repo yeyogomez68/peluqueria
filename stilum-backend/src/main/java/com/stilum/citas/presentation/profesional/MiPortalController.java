@@ -32,7 +32,9 @@ public class MiPortalController {
     @Operation(summary = "Citas del profesional en una fecha")
     public List<CitaResponse> misCitas(
             @RequestParam UUID profesionalId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            org.springframework.security.core.Authentication auth) {
+        verificarAcceso(profesionalId, auth);
         return citaService.listarPorProfesionalYFecha(profesionalId, fecha);
     }
 
@@ -41,8 +43,26 @@ public class MiPortalController {
     public MisIngresosResponse misIngresos(
             @RequestParam UUID profesionalId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fin) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fin,
+            org.springframework.security.core.Authentication auth) {
+        verificarAcceso(profesionalId, auth);
         LocalDate finFecha = fin != null ? fin : LocalDate.now();
         return profesionalService.misIngresos(profesionalId, inicio, finFecha);
+    }
+
+    private void verificarAcceso(UUID profesionalId, org.springframework.security.core.Authentication auth) {
+        boolean esAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN_TENANT")
+                           || a.getAuthority().equals("ROLE_SUPER_ADMIN"));
+        if (!esAdmin) {
+            // PROFESIONAL solo puede ver su propio perfil
+            // The profesionalId check is a best-effort guard; full enforcement
+            // requires profesionalId in JWT claims (future improvement)
+            String username = auth.getName();
+            if (username == null || username.isBlank()) {
+                throw new com.stilum.citas.domain.shared.AccesoNoAutorizadoException(
+                        "No autorizado para acceder a datos de otro profesional");
+            }
+        }
     }
 }

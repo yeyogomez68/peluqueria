@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "whatsapp_conversaciones")
+@Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class ConversacionWhatsApp {

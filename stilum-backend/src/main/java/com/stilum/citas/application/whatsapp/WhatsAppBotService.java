@@ -8,7 +8,6 @@ import com.stilum.citas.domain.tenant.Tenant;
 import com.stilum.citas.domain.tenant.TenantRepository;
 import com.stilum.citas.domain.whatsapp.ConversacionRepository;
 import com.stilum.citas.domain.whatsapp.ConversacionWhatsApp;
-import com.stilum.citas.infrastructure.security.TenantContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -51,7 +50,6 @@ public class WhatsAppBotService {
     }
 
     public String procesarMensaje(UUID tenantId, String telefono, String texto) {
-        TenantContext.set(tenantId);
         Tenant tenant = tenantRepository.findById(tenantId)
                 .orElseThrow(() -> new RuntimeException("Tenant no encontrado: " + tenantId));
 
@@ -82,7 +80,8 @@ public class WhatsAppBotService {
 
         String recomendacion = consultarIA(necesidad, profesionales, servicios);
 
-        conv.avanzarEstado("ESPERANDO_FECHA", "{\"necesidad\":\"" + necesidad.replace("\"", "'") + "\"}");
+        String necesidadSafe = necesidad.replaceAll("[\"\\\\\\n\\r\\t]", " ");
+        conv.avanzarEstado("ESPERANDO_FECHA", "{\"necesidad\":\"" + necesidadSafe + "\"}");
         conversacionRepository.save(conv);
         return recomendacion + "\n\n¿Para qué fecha te gustaría la cita? (Ej: mañana, el jueves, 25/06/2026)";
     }
