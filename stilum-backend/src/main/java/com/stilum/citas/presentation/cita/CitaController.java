@@ -2,6 +2,7 @@ package com.stilum.citas.presentation.cita;
 
 import com.stilum.citas.application.cita.CitaService;
 import com.stilum.citas.application.cita.dto.*;
+import com.stilum.citas.application.cita.dto.RegistrarPagoRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -101,6 +102,14 @@ public class CitaController {
     public CitaResponse completar(@PathVariable UUID id,
                                    @RequestBody(required = false) CompletarCitaRequest req) {
         return citaService.completar(id, req != null ? req : new CompletarCitaRequest(null));
+    }
+
+    @PatchMapping("/{id}/pagar")
+    @PreAuthorize("hasAnyRole('ADMIN_TENANT', 'PROFESIONAL', 'SUPER_ADMIN')")
+    @Operation(summary = "Registra pago de una cita", description = "Completa la cita con precio real cobrado y método de pago. Calcula la comisión del profesional automáticamente.")
+    public CitaResponse registrarPago(@PathVariable UUID id,
+                                       @Valid @RequestBody RegistrarPagoRequest req) {
+        return citaService.registrarPago(id, req);
     }
 
     @PatchMapping("/{id}/cancelar")

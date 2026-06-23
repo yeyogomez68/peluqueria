@@ -77,4 +77,14 @@ public class ProfesionalController {
     public ProfesionalResponse desactivar(@PathVariable UUID id) {
         return profesionalService.desactivar(id);
     }
+
+    @PatchMapping("/{id}/comision")
+    @PreAuthorize("hasRole('ADMIN_TENANT')")
+    @Operation(summary = "Actualiza porcentaje de comisión del profesional")
+    public ProfesionalResponse actualizarComision(
+            @PathVariable UUID id,
+            @RequestParam @jakarta.validation.constraints.DecimalMin("0")
+            @jakarta.validation.constraints.DecimalMax("100") java.math.BigDecimal porcentaje) {
+        return profesionalService.actualizarComision(id, porcentaje);
+    }
 }
