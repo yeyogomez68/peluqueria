@@ -55,3 +55,9 @@ stilum:
     expiration-ms: 86400000  # 24 horas
   cors:
     allowed-origins: ${CORS_ORIGINS:http://localhost:4200}
+  claude:
+    api-key: ${CLAUDE_API_KEY:}
+    model: claude-haiku-4-5-20251001
+    api-url: https://api.anthropic.com/v1/messages
+  whatsapp:
+    verify-token: ${WHATSAPP_VERIFY_TOKEN:stilum-verify-2024}
