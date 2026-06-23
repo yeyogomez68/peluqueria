@@ -29,5 +29,8 @@ public interface CitaRepository {
     /** Citas completadas de un tenant en una fecha (para contabilidad). */
     List<Cita> findCompletadasPorTenantYFecha(UUID tenantId, java.time.LocalDate fecha);
 
+    /** Citas completadas de un profesional en un rango de fechas (para mi portal). */
+    List<Cita> findCompletadasPorProfesionalYRango(UUID profesionalId, java.time.LocalDate inicio, java.time.LocalDate fin);
+
     Cita save(Cita cita);
 }

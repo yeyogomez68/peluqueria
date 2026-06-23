@@ -2,8 +2,11 @@ package com.stilum.citas.application.profesional;
 
 import com.stilum.citas.application.profesional.dto.CreateProfesionalRequest;
 import com.stilum.citas.application.profesional.dto.HorarioDto;
+import com.stilum.citas.application.profesional.dto.MisIngresosResponse;
 import com.stilum.citas.application.profesional.dto.ProfesionalResponse;
 import com.stilum.citas.application.profesional.dto.UpdateProfesionalRequest;
+import com.stilum.citas.domain.cita.Cita;
+import com.stilum.citas.domain.cita.CitaRepository;
 import com.stilum.citas.domain.profesional.HorarioProfesional;
 import com.stilum.citas.domain.profesional.Profesional;
 import com.stilum.citas.domain.profesional.ProfesionalRepository;
@@ -18,6 +21,8 @@ import com.stilum.citas.infrastructure.security.TenantContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,13 +38,16 @@ public class ProfesionalService {
     private final ProfesionalRepository profesionalRepository;
     private final TenantRepository tenantRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final CitaRepository citaRepository;
 
     public ProfesionalService(ProfesionalRepository profesionalRepository,
                               TenantRepository tenantRepository,
-                              SubscriptionRepository subscriptionRepository) {
+                              SubscriptionRepository subscriptionRepository,
+                              CitaRepository citaRepository) {
         this.profesionalRepository = profesionalRepository;
         this.tenantRepository = tenantRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.citaRepository = citaRepository;
     }
 
     /** Lista todos los profesionales del tenant (activos e inactivos). */
@@ -147,6 +155,30 @@ public class ProfesionalService {
         Profesional p = findAndVerify(id);
         p.desactivar();
         return ProfesionalResponse.from(profesionalRepository.save(p));
+    }
+
+    public MisIngresosResponse misIngresos(UUID profesionalId, LocalDate inicio, LocalDate fin) {
+        List<Cita> citas = citaRepository.findCompletadasPorProfesionalYRango(profesionalId, inicio, fin);
+
+        BigDecimal totalFacturado = citas.stream()
+                .map(c -> c.getPrecioCobrado() != null ? c.getPrecioCobrado() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal totalComision = citas.stream()
+                .map(c -> c.getComisionCalculada() != null ? c.getComisionCalculada() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        List<MisIngresosResponse.IngresoDetalle> detalle = citas.stream()
+                .map(c -> new MisIngresosResponse.IngresoDetalle(
+                        c.getFechaHoraInicio(),
+                        c.getServicio().getNombre(),
+                        c.getCliente().getNombre(),
+                        c.getPrecioCobrado(),
+                        c.getComisionCalculada(),
+                        c.getMetodoPago()
+                )).toList();
+
+        return new MisIngresosResponse(inicio, fin, citas.size(), totalFacturado, totalComision, detalle);
     }
 
     @Transactional

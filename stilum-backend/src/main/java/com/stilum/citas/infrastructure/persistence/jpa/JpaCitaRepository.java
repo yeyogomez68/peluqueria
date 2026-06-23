@@ -89,4 +89,19 @@ public interface JpaCitaRepository extends JpaRepository<Cita, UUID>, CitaReposi
     List<Cita> findCompletadasPorTenantYFecha(
             @Param("tenantId") UUID tenantId,
             @Param("fecha") java.time.LocalDate fecha);
+
+    @Override
+    @Query("""
+        SELECT c FROM Cita c
+        JOIN FETCH c.servicio
+        JOIN FETCH c.cliente
+        WHERE c.profesional.id = :profesionalId
+          AND c.estado = 'COMPLETADA'
+          AND CAST(c.fechaHoraInicio AS date) BETWEEN :inicio AND :fin
+        ORDER BY c.fechaHoraInicio DESC
+        """)
+    List<Cita> findCompletadasPorProfesionalYRango(
+            @Param("profesionalId") UUID profesionalId,
+            @Param("inicio") java.time.LocalDate inicio,
+            @Param("fin") java.time.LocalDate fin);
 }
