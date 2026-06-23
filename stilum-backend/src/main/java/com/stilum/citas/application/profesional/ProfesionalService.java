@@ -149,6 +149,14 @@ public class ProfesionalService {
         return ProfesionalResponse.from(profesionalRepository.save(p));
     }
 
+    @Transactional
+    public ProfesionalResponse actualizarComision(UUID profesionalId, java.math.BigDecimal porcentaje) {
+        Profesional p = profesionalRepository.findById(profesionalId)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Profesional", profesionalId));
+        p.actualizarComision(porcentaje);
+        return ProfesionalResponse.from(profesionalRepository.save(p));
+    }
+
     // ── Helpers ────────────────────────────────────────────────────────────
 
     private UUID requireTenantContext() {

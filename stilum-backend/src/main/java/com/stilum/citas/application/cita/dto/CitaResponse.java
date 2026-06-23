@@ -16,6 +16,8 @@ public record CitaResponse(
         ZonedDateTime fechaHoraFin,
         int duracionMin,
         BigDecimal precioCobrado,
+        String metodoPago,
+        BigDecimal comisionCalculada,
         String origen,
         String notas,
         String motivoCancelacion,
@@ -27,7 +29,7 @@ public record CitaResponse(
         Instant createdAt
 ) {
 
-    public record ProfesionalResumen(UUID id, String nombre, String colorAgenda) {}
+    public record ProfesionalResumen(UUID id, String nombre, String colorAgenda, BigDecimal comisionPorcentaje) {}
     public record ServicioResumen(UUID id, String nombre, int duracionMin, BigDecimal precio) {}
     public record ClienteResumen(UUID id, String nombre, String telefono) {}
 
@@ -40,6 +42,8 @@ public record CitaResponse(
                 c.getFechaHoraFin(),
                 c.getDuracionMin(),
                 c.getPrecioCobrado(),
+                c.getMetodoPago(),
+                c.getComisionCalculada(),
                 c.getOrigen(),
                 c.getNotas(),
                 c.getMotivoCancelacion(),
@@ -48,7 +52,8 @@ public record CitaResponse(
                 new ProfesionalResumen(
                         c.getProfesional().getId(),
                         c.getProfesional().getNombre(),
-                        c.getProfesional().getColorAgenda()),
+                        c.getProfesional().getColorAgenda(),
+                        c.getProfesional().getComisionPorcentaje()),
                 new ServicioResumen(
                         c.getServicio().getId(),
                         c.getServicio().getNombre(),

@@ -20,6 +20,9 @@ import com.stilum.citas.infrastructure.security.TenantContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.stilum.citas.application.cita.dto.RegistrarPagoRequest;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -194,11 +197,21 @@ public class CitaService {
         return CitaResponse.from(citaRepository.save(cita));
     }
 
-    /** Completa una cita EN_CURSO registrando el precio cobrado. */
+    /** Completa una cita con precio sugerido (sin método de pago explícito). */
     @Transactional
     public CitaResponse completar(UUID id, CompletarCitaRequest req) {
         Cita cita = findAndVerify(id);
-        cita.completar(req.precioCobrado());
+        BigDecimal comision = cita.getProfesional().getComisionPorcentaje();
+        cita.completar(req.precioCobrado(), null, comision);
+        return CitaResponse.from(citaRepository.save(cita));
+    }
+
+    /** Registra el pago real — precio cobrado + método de pago — y calcula comisión. */
+    @Transactional
+    public CitaResponse registrarPago(UUID id, RegistrarPagoRequest req) {
+        Cita cita = findAndVerify(id);
+        BigDecimal comision = cita.getProfesional().getComisionPorcentaje();
+        cita.completar(req.precioCobrado(), req.metodoPago(), comision);
         return CitaResponse.from(citaRepository.save(cita));
     }
 
