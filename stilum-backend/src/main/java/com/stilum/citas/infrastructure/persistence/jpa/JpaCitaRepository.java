@@ -75,4 +75,18 @@ public interface JpaCitaRepository extends JpaRepository<Cita, UUID>, CitaReposi
     default long contarCitasEnMes(UUID tenantId, YearMonth mes) {
         return contarCitasEnMesByYearMonth(tenantId, mes.getYear(), mes.getMonthValue());
     }
+
+    @Override
+    @Query("""
+        SELECT c FROM Cita c
+        JOIN FETCH c.profesional
+        JOIN FETCH c.servicio
+        WHERE c.tenant.id = :tenantId
+          AND c.estado = 'COMPLETADA'
+          AND CAST(c.fechaHoraInicio AS date) = :fecha
+        ORDER BY c.fechaHoraInicio
+        """)
+    List<Cita> findCompletadasPorTenantYFecha(
+            @Param("tenantId") UUID tenantId,
+            @Param("fecha") java.time.LocalDate fecha);
 }

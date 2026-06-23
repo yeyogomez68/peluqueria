@@ -26,5 +26,8 @@ public interface CitaRepository {
     /** Cuenta citas activas (no canceladas ni no-show) en un mes. */
     long contarCitasEnMes(UUID tenantId, YearMonth mes);
 
+    /** Citas completadas de un tenant en una fecha (para contabilidad). */
+    List<Cita> findCompletadasPorTenantYFecha(UUID tenantId, java.time.LocalDate fecha);
+
     Cita save(Cita cita);
 }
