@@ -1,0 +1,81 @@
+:host { display: block; }
+
+.st-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-fast) var(--easing-default);
+  user-select: none;
+
+  &:hover { background-color: var(--color-bg-hover); }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover { background-color: transparent; }
+  }
+}
+
+.st-checkbox-native {
+  appearance: none;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.st-checkbox__box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+  transition: background-color var(--duration-fast) var(--easing-default),
+              border-color var(--duration-fast) var(--easing-default);
+
+  &--checked {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+}
+
+.st-checkbox__icon {
+  font-size: 10px;
+  color: var(--color-text-on-accent);
+  animation: checkIn var(--duration-fast) var(--easing-spring);
+}
+
+@keyframes checkIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.st-checkbox-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.st-checkbox-text {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-1);
+  line-height: 1.4;
+}
+
+.st-label__req { color: var(--color-accent); margin-left: 2px; }
+
+.st-checkbox-desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-2);
+  line-height: 1.4;
+}

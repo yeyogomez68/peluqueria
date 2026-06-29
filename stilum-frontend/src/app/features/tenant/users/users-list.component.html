@@ -1,0 +1,76 @@
+<div class="list-page">
+  <div class="list-header">
+    <div>
+      <h1>Usuarios</h1>
+      <p class="text-muted text-sm">Profesionales y administradores de tu negocio</p>
+    </div>
+    <st-button label="Nuevo usuario" icon="pi-plus" (onClick)="form.reset({ rol: 'PROFESIONAL' }); showForm.set(true)" />
+  </div>
+
+  <div class="list-card">
+    @if (loading()) {
+      <div class="table-loading">
+        <span class="spinner"></span>
+        <span class="text-muted text-sm">Cargando usuarios…</span>
+      </div>
+    } @else if (users().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-users empty-state__icon"></i>
+        <p>No hay usuarios registrados</p>
+        <st-button label="Crear primer usuario" variant="secondary" (onClick)="form.reset({ rol: 'PROFESIONAL' }); showForm.set(true)" />
+      </div>
+    } @else {
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Último acceso</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of users(); track u.id) {
+            <tr>
+              <td><span class="table-primary">{{ u.nombre }}</span></td>
+              <td class="text-sm text-muted">{{ u.email }}</td>
+              <td>
+                <st-badge [label]="rolLabel(u.rol)" [variant]="u.rol === 'ADMIN_TENANT' ? 'info' : 'default'" />
+              </td>
+              <td>
+                <st-badge [label]="u.activo ? 'Activo' : 'Inactivo'" [variant]="u.activo ? 'success' : 'default'" />
+              </td>
+              <td class="text-sm text-muted">
+                {{ u.ultimoLogin ? (u.ultimoLogin | date:'dd/MM/yyyy HH:mm') : 'Nunca' }}
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button class="action-btn" [class.action-btn--danger]="u.activo" type="button" (click)="toggleEstado(u)" [title]="u.activo ? 'Desactivar' : 'Activar'">
+                    <i [class]="'pi ' + (u.activo ? 'pi-ban' : 'pi-check-circle')"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+<st-modal [visible]="showForm()" header="Nuevo Usuario" (visibleChange)="showForm.set($any($event))">
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="modal-form">
+
+    <st-input label="Nombre" placeholder="Nombre completo" formControlName="nombre" [required]="true" />
+    <st-input label="Email" type="email" placeholder="usuario@correo.com" formControlName="email" [required]="true" />
+    <st-input label="Contraseña" type="password" placeholder="Mínimo 8 caracteres" formControlName="password" [required]="true" />
+    <st-select label="Rol" [options]="rolOptions" formControlName="rol" [required]="true" />
+
+    <div class="modal-actions">
+      <st-button label="Cancelar" variant="ghost" type="button" (onClick)="showForm.set(false)" />
+      <st-button label="Crear usuario" type="submit" [loading]="saving()" [disabled]="form.invalid" />
+    </div>
+  </form>
+</st-modal>

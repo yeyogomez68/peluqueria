@@ -1,0 +1,124 @@
+@use 'colors' as c;
+
+// ── Tema Claro ────────────────────────────────────────────────
+[data-theme='light'],
+:root {
+  --color-accent:           #{c.$c-coral};
+  --color-accent-light:     #{c.$c-coral-light};
+  --color-accent-dark:      #{c.$c-coral-dark};
+  --color-accent-subtle:    #{c.$c-coral-subtle};
+  --color-accent-text:      #ffffff;
+
+  --color-bg-page:          #{c.$c-warm-white};
+  --color-bg-surface:       #ffffff;
+  --color-bg-card:          #ffffff;
+  --color-bg-elevated:      #{c.$c-warm-50};
+  --color-bg-sidebar:       #{c.$c-text-primary};
+  --color-bg-input:         #ffffff;
+  --color-bg-hover:         #{c.$c-warm-50};
+  --color-bg-active:        #{c.$c-warm-100};
+
+  --color-text-1:           #{c.$c-text-primary};
+  --color-text-2:           #{c.$c-text-secondary};
+  --color-text-3:           #{c.$c-text-tertiary};
+  --color-text-on-accent:   #ffffff;
+  --color-text-sidebar:     rgba(255,255,255,0.7);
+  --color-text-sidebar-active: #ffffff;
+
+  --color-border:           #{c.$c-warm-100};
+  --color-border-strong:    #{c.$c-warm-200};
+  --color-border-focus:     #{c.$c-coral};
+  --color-border-input:     #{c.$c-warm-200};
+
+  --shadow-xs:   0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm:   0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.10);
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-modal:0 24px 64px rgba(0,0,0,0.14);
+
+  --color-success:        #{c.$c-success};
+  --color-success-bg:     #{c.$c-success}18;
+  --color-warning:        #{c.$c-warning};
+  --color-warning-bg:     #{c.$c-warning}18;
+  --color-danger:         #{c.$c-danger};
+  --color-danger-bg:      #{c.$c-danger}18;
+  --color-info:           #{c.$c-info};
+  --color-info-bg:        #{c.$c-info}18;
+
+  --cita-pendiente-bg:    #{c.$c-cita-pendiente}18;
+  --cita-pendiente-text:  #{c.$c-cita-pendiente};
+  --cita-confirmada-bg:   #{c.$c-cita-confirmada}18;
+  --cita-confirmada-text: #{c.$c-cita-confirmada};
+  --cita-en-curso-bg:     #{c.$c-cita-en-curso}18;
+  --cita-en-curso-text:   #{c.$c-cita-en-curso};
+  --cita-completada-bg:   #{c.$c-cita-completada}18;
+  --cita-completada-text: #{c.$c-cita-completada};
+  --cita-cancelada-bg:    #{c.$c-cita-cancelada}18;
+  --cita-cancelada-text:  #{c.$c-cita-cancelada};
+  --cita-no-show-bg:      #{c.$c-cita-no-show}18;
+  --cita-no-show-text:    #{c.$c-cita-no-show};
+
+  --transition-theme: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+// ── Tema Oscuro ───────────────────────────────────────────────
+[data-theme='dark'] {
+  --color-accent:           #{c.$c-coral};
+  --color-accent-light:     #{c.$c-coral-light};
+  --color-accent-dark:      #{c.$c-coral-dark};
+  --color-accent-subtle:    rgba(232,93,74,0.12);
+  --color-accent-text:      #ffffff;
+
+  --color-bg-page:          #{c.$c-ink};
+  --color-bg-surface:       #{c.$c-ink-surface};
+  --color-bg-card:          #{c.$c-ink-card};
+  --color-bg-elevated:      #{c.$c-ink-elevated};
+  --color-bg-sidebar:       #{c.$c-ink-surface};
+  --color-bg-input:         #{c.$c-ink-elevated};
+  --color-bg-hover:         rgba(255,255,255,0.04);
+  --color-bg-active:        rgba(232,93,74,0.12);
+
+  --color-text-1:           #{c.$c-text-on-dark};
+  --color-text-2:           #{c.$c-text-muted-dark};
+  --color-text-3:           rgba(255,255,255,0.35);
+  --color-text-on-accent:   #ffffff;
+  --color-text-sidebar:     rgba(255,255,255,0.55);
+  --color-text-sidebar-active: #ffffff;
+
+  --color-border:           #{c.$c-ink-border};
+  --color-border-strong:    rgba(255,255,255,0.12);
+  --color-border-focus:     #{c.$c-coral};
+  --color-border-input:     #{c.$c-ink-border};
+
+  --shadow-xs:   0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm:   0 1px 4px rgba(0,0,0,0.4);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.6);
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-modal:0 24px 64px rgba(0,0,0,0.7);
+
+  --color-success:        #{c.$c-success};
+  --color-success-bg:     #{c.$c-success}20;
+  --color-warning:        #{c.$c-warning};
+  --color-warning-bg:     #{c.$c-warning}20;
+  --color-danger:         #{c.$c-danger};
+  --color-danger-bg:      #{c.$c-danger}20;
+  --color-info:           #{c.$c-info};
+  --color-info-bg:        #{c.$c-info}20;
+
+  --cita-pendiente-bg:    #{c.$c-cita-pendiente}25;
+  --cita-pendiente-text:  #{c.$c-cita-pendiente};
+  --cita-confirmada-bg:   #{c.$c-cita-confirmada}25;
+  --cita-confirmada-text: #{c.$c-cita-confirmada};
+  --cita-en-curso-bg:     #{c.$c-cita-en-curso}25;
+  --cita-en-curso-text:   #{c.$c-cita-en-curso};
+  --cita-completada-bg:   #{c.$c-cita-completada}25;
+  --cita-completada-text: #{c.$c-cita-completada};
+  --cita-cancelada-bg:    #{c.$c-cita-cancelada}25;
+  --cita-cancelada-text:  #{c.$c-cita-cancelada};
+  --cita-no-show-bg:      #{c.$c-cita-no-show}25;
+  --cita-no-show-text:    #{c.$c-cita-no-show};
+
+  --transition-theme: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}

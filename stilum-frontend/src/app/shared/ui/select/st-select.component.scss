@@ -1,0 +1,51 @@
+:host { display: block; }
+
+.st-field { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.st-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-1);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+
+  &__req { color: var(--color-accent); margin-left: 2px; }
+}
+
+.st-select-wrap { position: relative; }
+
+.st-select {
+  width: 100%;
+  appearance: none;
+  background: var(--color-bg-input);
+  color: var(--color-text-1);
+  border: 1.5px solid var(--color-border-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-10) var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  outline: none;
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--easing-default),
+    box-shadow var(--duration-fast) var(--easing-default);
+
+  option { background: var(--color-bg-card); color: var(--color-text-1); }
+
+  &:focus {
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 3px var(--color-accent-subtle);
+  }
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.st-select-icon {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: var(--color-text-3);
+  pointer-events: none;
+}

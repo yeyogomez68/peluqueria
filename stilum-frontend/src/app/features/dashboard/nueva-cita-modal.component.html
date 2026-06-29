@@ -1,0 +1,88 @@
+<st-modal
+  [visible]="visible"
+  header="Nueva cita"
+  width="540px"
+  (visibleChange)="visibleChange.emit($event)"
+>
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="cita-form">
+
+    <div class="form-row-2">
+      <st-select
+        label="Profesional"
+        placeholder="Selecciona el profesional"
+        [options]="profesionalOptions()"
+        formControlName="profesionalId"
+        [required]="true"
+        (selectionChange)="onProfesionalChange()"
+      />
+      <st-select
+        label="Servicio"
+        placeholder="Selecciona el servicio"
+        [options]="servicioOptions()"
+        formControlName="servicioId"
+        [required]="true"
+        (selectionChange)="onServicioChange()"
+      />
+    </div>
+
+    <div class="field">
+      <label class="st-label">Horario disponible <span class="st-label__req">*</span></label>
+      @if (loadingSlots()) {
+        <div class="slots-loading">
+          <span class="slot-spinner"></span>
+          <span class="text-sm text-muted">Buscando disponibilidad…</span>
+        </div>
+      } @else if (slotOptions().length === 0 && form.value.profesionalId && form.value.servicioId) {
+        <div class="slots-empty">
+          <i class="pi pi-calendar-times"></i>
+          <span class="text-sm text-muted">Sin horarios disponibles para hoy</span>
+        </div>
+      } @else {
+        <st-select
+          placeholder="Selecciona el horario"
+          [options]="slotOptions()"
+          formControlName="slot"
+          [required]="true"
+        />
+      }
+    </div>
+
+    <hr class="divider" />
+
+    <div class="form-section-label">Datos del cliente</div>
+
+    <div class="form-row-2">
+      <st-input
+        label="Teléfono"
+        placeholder="3001234567"
+        icon="pi-phone"
+        formControlName="clienteTelefono"
+        [required]="true"
+      />
+      <st-input
+        label="Nombre"
+        placeholder="Nombre del cliente"
+        icon="pi-user"
+        formControlName="clienteNombre"
+      />
+    </div>
+
+    <st-input
+      label="Notas"
+      placeholder="Observaciones opcionales"
+      formControlName="notas"
+    />
+
+    <div class="modal-actions">
+      <st-button label="Cancelar" variant="ghost" type="button" (onClick)="cerrar()" />
+      <st-button
+        label="Agendar cita"
+        icon="pi-calendar-plus"
+        type="submit"
+        [loading]="saving()"
+        [disabled]="form.invalid"
+      />
+    </div>
+
+  </form>
+</st-modal>

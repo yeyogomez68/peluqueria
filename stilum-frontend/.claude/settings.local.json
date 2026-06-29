@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm view jest-preset-angular versions --json 2>&1)",
+      "PowerShell(npm view jest-preset-angular@\">=15.0.0\" peerDependencies 2>&1)",
+      "PowerShell(npm view @types/jest versions --json 2>&1)"
+    ]
+  }
+}

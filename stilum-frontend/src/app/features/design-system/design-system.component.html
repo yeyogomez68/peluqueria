@@ -1,0 +1,612 @@
+<div class="ds-page">
+
+  <!-- Header -->
+  <div class="ds-header">
+    <div class="ds-header__title">
+      <h1>Sistema de Diseño</h1>
+      <p class="text-muted">Stilum UI · todos los componentes y tokens disponibles</p>
+    </div>
+    <div class="ds-header__meta">
+      <st-chip label="22 componentes" variant="accent" icon="pi-check" />
+      <st-chip label="Angular 17+" variant="info" />
+      <st-chip label="OnPush" variant="success" />
+    </div>
+  </div>
+
+  <!-- Navegación principal -->
+  <st-tabs [tabs]="sections" [(active)]="activeSection" />
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FUNDAMENTOS                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'foundation') {
+    <div class="ds-sections">
+
+      <!-- Tipografía -->
+      <section class="ds-section">
+        <h2 class="ds-section__title">Tipografía</h2>
+        <div class="ds-section__body">
+          <div class="ds-type-row">
+            <span class="ds-type-label">Display / Fraunces</span>
+            <div class="ds-type-samples">
+              <span style="font-family:var(--font-display);font-size:var(--text-4xl);font-weight:var(--font-semibold);letter-spacing:var(--tracking-tight)">Stilum Pro Aa</span>
+              <span style="font-family:var(--font-display);font-size:var(--text-2xl);font-style:italic;font-weight:var(--font-light)">"La excelencia en cada cita"</span>
+            </div>
+          </div>
+          <div class="ds-divider"></div>
+          <div class="ds-type-row">
+            <span class="ds-type-label">Body / DM Sans</span>
+            <div class="ds-type-samples">
+              <span style="font-size:var(--text-base);font-weight:var(--font-regular)">Regular — Texto de párrafo y UI general</span>
+              <span style="font-size:var(--text-sm);font-weight:var(--font-medium)">Medium — Labels y botones</span>
+              <span style="font-size:var(--text-xs);font-weight:var(--font-semibold);text-transform:uppercase;letter-spacing:var(--tracking-wide)">SEMIBOLD CAPS — Encabezados de tabla</span>
+            </div>
+          </div>
+          <div class="ds-divider"></div>
+          <div class="ds-type-scale">
+            @for (size of ['4xl','3xl','2xl','xl','lg','base','sm','xs']; track size) {
+              <div class="ds-type-scale-row">
+                <code class="ds-code">--text-{{ size }}</code>
+                <span [style.font-size]="'var(--text-' + size + ')'">El zorro rápido</span>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Paleta de colores -->
+      <section class="ds-section">
+        <h2 class="ds-section__title">Paleta de colores</h2>
+        <div class="ds-section__body">
+          <div class="ds-color-groups">
+            <div class="ds-color-group">
+              <p class="ds-color-group__label">Acento</p>
+              <div class="ds-swatches">
+                <div class="ds-swatch" style="background:var(--color-accent)"><span>accent</span></div>
+                <div class="ds-swatch" style="background:var(--color-accent-light)"><span>light</span></div>
+                <div class="ds-swatch" style="background:var(--color-accent-dark)"><span>dark</span></div>
+                <div class="ds-swatch ds-swatch--border" style="background:var(--color-accent-subtle)"><span style="color:var(--color-accent)">subtle</span></div>
+              </div>
+            </div>
+            <div class="ds-color-group">
+              <p class="ds-color-group__label">Semánticos</p>
+              <div class="ds-swatches">
+                <div class="ds-swatch" style="background:var(--color-success)"><span>success</span></div>
+                <div class="ds-swatch" style="background:var(--color-warning)"><span>warning</span></div>
+                <div class="ds-swatch" style="background:var(--color-danger)"><span>danger</span></div>
+                <div class="ds-swatch" style="background:var(--color-info)"><span>info</span></div>
+              </div>
+            </div>
+            <div class="ds-color-group">
+              <p class="ds-color-group__label">Fondos</p>
+              <div class="ds-swatches">
+                <div class="ds-swatch ds-swatch--border" style="background:var(--color-bg-page)"><span style="color:var(--color-text-2)">page</span></div>
+                <div class="ds-swatch ds-swatch--border" style="background:var(--color-bg-card)"><span style="color:var(--color-text-2)">card</span></div>
+                <div class="ds-swatch ds-swatch--border" style="background:var(--color-bg-elevated)"><span style="color:var(--color-text-2)">elevated</span></div>
+                <div class="ds-swatch" style="background:var(--color-bg-sidebar)"><span>sidebar</span></div>
+              </div>
+            </div>
+            <div class="ds-color-group">
+              <p class="ds-color-group__label">Estados cita</p>
+              <div class="ds-swatches">
+                <div class="ds-swatch" style="background:var(--cita-pendiente-text)"><span>pendiente</span></div>
+                <div class="ds-swatch" style="background:var(--cita-confirmada-text)"><span>confirmada</span></div>
+                <div class="ds-swatch" style="background:var(--cita-en-curso-text)"><span>en curso</span></div>
+                <div class="ds-swatch" style="background:var(--cita-completada-text)"><span>completada</span></div>
+                <div class="ds-swatch" style="background:var(--cita-cancelada-text)"><span>cancelada</span></div>
+                <div class="ds-swatch" style="background:var(--cita-no-show-text)"><span>no show</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Spacing & Radius -->
+      <section class="ds-section">
+        <h2 class="ds-section__title">Espaciado · Grid de 4px</h2>
+        <div class="ds-section__body">
+          <div class="ds-spacing-grid">
+            @for (n of [1,2,3,4,5,6,8,10,12,16]; track n) {
+              <div class="ds-spacing-row">
+                <code class="ds-code">--space-{{ n }}</code>
+                <div class="ds-spacing-bar" [style.width]="'calc(var(--space-' + n + ') * 4)'"></div>
+                <span class="text-muted text-xs">{{ n * 4 }}px</span>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Sombras & Radios -->
+      <section class="ds-section">
+        <h2 class="ds-section__title">Sombras & Radios</h2>
+        <div class="ds-section__body ds-grid-2">
+          <div class="ds-shadow-samples">
+            @for (s of ['xs','sm','md','lg','card','modal']; track s) {
+              <div class="ds-shadow-sample" [style.box-shadow]="'var(--shadow-' + s + ')'">
+                <code class="ds-code">--shadow-{{ s }}</code>
+              </div>
+            }
+          </div>
+          <div class="ds-radius-samples">
+            @for (r of ['sm','md','lg','xl','2xl','full']; track r) {
+              <div class="ds-radius-row">
+                <div class="ds-radius-box" [style.border-radius]="'var(--radius-' + r + ')'"></div>
+                <code class="ds-code">--radius-{{ r }}</code>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- BOTONES                                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'buttons') {
+    <div class="ds-sections">
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StButtonComponent</h2>
+        <div class="ds-section__body">
+
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Variantes</p>
+            <div class="ds-row">
+              <st-button label="Primary" variant="primary" />
+              <st-button label="Secondary" variant="secondary" />
+              <st-button label="Ghost" variant="ghost" />
+              <st-button label="Danger" variant="danger" />
+            </div>
+          </div>
+
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Tamaños</p>
+            <div class="ds-row ds-row--align-center">
+              <st-button label="Small" size="sm" />
+              <st-button label="Medium" size="md" />
+              <st-button label="Large" size="lg" />
+            </div>
+          </div>
+
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Con icono</p>
+            <div class="ds-row">
+              <st-button label="Nuevo" icon="pi-plus" />
+              <st-button label="Guardar" icon="pi-check" variant="secondary" />
+              <st-button label="Eliminar" icon="pi-trash" variant="danger" />
+              <st-button icon="pi-pencil" variant="ghost" size="sm" />
+              <st-button icon="pi-trash" variant="ghost" size="sm" />
+              <st-button icon="pi-ellipsis-v" variant="secondary" size="sm" />
+            </div>
+          </div>
+
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Estados</p>
+            <div class="ds-row">
+              <st-button label="Loading…" [loading]="true" />
+              <st-button label="Deshabilitado" [disabled]="true" />
+              <st-button label="Loading secondary" variant="secondary" [loading]="true" />
+            </div>
+          </div>
+
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Full width</p>
+            <st-button label="Botón de ancho completo" [fullWidth]="true" size="lg" />
+          </div>
+        </div>
+      </section>
+
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FORMULARIOS                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'forms') {
+    <div class="ds-sections" [formGroup]="demoForm">
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StInputComponent</h2>
+        <div class="ds-section__body ds-grid-2">
+          <st-input label="Email" placeholder="tu@email.com" type="email" icon="pi-envelope"
+            formControlName="email" [required]="true" />
+          <st-input label="Contraseña" placeholder="••••••••" type="password" icon="pi-lock"
+            formControlName="password" />
+          <st-input label="Con error" placeholder="Escribe algo" icon="pi-user"
+            [hasError]="true" errorMsg="Este campo es requerido" formControlName="email" />
+          <st-input label="Sin icono" placeholder="Nombre completo" formControlName="email" />
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StTextareaComponent</h2>
+        <div class="ds-section__body ds-grid-2">
+          <st-textarea label="Notas" placeholder="Observaciones adicionales..."
+            formControlName="notas" [rows]="4" [maxLength]="200" />
+          <st-textarea label="Sin límite" placeholder="Texto libre..."
+            formControlName="notas" [rows]="3" />
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StSelectComponent</h2>
+        <div class="ds-section__body ds-grid-2">
+          <st-select label="Rol" placeholder="Seleccionar rol..."
+            [options]="rolOptions" formControlName="rol" [required]="true" />
+          <st-select label="Sin requerir" placeholder="Opcional..."
+            [options]="rolOptions" formControlName="rol" />
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StCheckboxComponent</h2>
+        <div class="ds-section__body">
+          <div class="ds-row ds-row--col">
+            <st-checkbox label="Activo" formControlName="activo" />
+            <st-checkbox label="Enviar notificaciones"
+              description="Recibirás un email cuando se confirme la cita"
+              formControlName="notifs" />
+            <st-checkbox label="Deshabilitado" [disabled]="true" formControlName="activo" />
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StToggleComponent</h2>
+        <div class="ds-section__body">
+          <div class="ds-row ds-row--col">
+            <st-toggle label="Disponible" formControlName="activo" />
+            <st-toggle label="Modo mantenimiento"
+              description="Bloquea la creación de nuevas citas"
+              formControlName="notifs" size="md" />
+            <st-toggle label="Label a la izquierda" labelPosition="left"
+              formControlName="activo" />
+            <st-toggle label="Pequeño" size="sm" formControlName="notifs" />
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StSearchInputComponent</h2>
+        <div class="ds-section__body ds-grid-2">
+          <st-search-input placeholder="Buscar profesionales..."
+            formControlName="search" />
+          <st-search-input placeholder="Buscar por nombre o email..."
+            [debounceMs]="500" formControlName="search" />
+        </div>
+      </section>
+
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FEEDBACK                                                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'feedback') {
+    <div class="ds-sections">
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StAlertComponent</h2>
+        <div class="ds-section__body ds-stack">
+          <st-alert severity="success" title="Guardado correctamente"
+            message="Los cambios se han aplicado y el usuario fue notificado." />
+          <st-alert severity="error" title="Error al procesar"
+            message="No se pudo completar la operación. Verifica tu conexión e intenta de nuevo." />
+          <st-alert severity="warning" title="Atención"
+            message="Esta acción no se puede deshacer. Asegúrate de haber revisado los datos." />
+          <st-alert severity="info"
+            message="Recuerda que los cambios entrarán en vigencia el próximo día hábil." />
+          <st-alert severity="error" title="Descartable" message="Haz clic en la X para cerrar."
+            [dismissible]="true" />
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StBadgeComponent</h2>
+        <div class="ds-section__body">
+          <div class="ds-row ds-row--wrap">
+            @for (v of badgeVariants; track v) {
+              <st-badge [label]="v" [variant]="v" />
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StChipComponent</h2>
+        <div class="ds-section__body">
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Variantes</p>
+            <div class="ds-row ds-row--wrap">
+              <st-chip label="Default" variant="default" />
+              <st-chip label="Accent" variant="accent" />
+              <st-chip label="Success" variant="success" />
+              <st-chip label="Warning" variant="warning" />
+              <st-chip label="Danger" variant="danger" />
+              <st-chip label="Info" variant="info" />
+            </div>
+          </div>
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Con icono y removible</p>
+            <div class="ds-row ds-row--wrap">
+              <st-chip label="Colorista" variant="accent" icon="pi-user" />
+              <st-chip label="Angular" variant="info" icon="pi-code" [removable]="true" />
+              <st-chip label="Activo" variant="success" [removable]="true" />
+              <st-chip label="Pequeño" size="sm" variant="default" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StToastComponent · ToastService</h2>
+        <div class="ds-section__body">
+          <p class="text-muted text-sm" style="margin-bottom:var(--space-4)">
+            El toast se muestra en la esquina de la pantalla. Está montado en el shell.
+          </p>
+          <div class="ds-row">
+            <st-button label="Success" variant="primary" (onClick)="fireToast('success')" />
+            <st-button label="Error" variant="danger" (onClick)="fireToast('error')" />
+            <st-button label="Warning" variant="secondary" (onClick)="fireToast('warning')" />
+            <st-button label="Info" variant="ghost" (onClick)="fireToast('info')" />
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StSpinnerComponent</h2>
+        <div class="ds-section__body">
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Tamaños</p>
+            <div class="ds-row ds-row--align-center">
+              <st-spinner size="sm" />
+              <st-spinner size="md" />
+              <st-spinner size="lg" />
+              <st-spinner size="xl" />
+            </div>
+          </div>
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Con label</p>
+            <st-spinner size="md" label="Cargando citas..." />
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StSkeletonComponent</h2>
+        <div class="ds-section__body ds-grid-2">
+          <div class="ds-stack" style="gap:var(--space-3)">
+            <p class="ds-showcase-label">Texto (3 líneas)</p>
+            <st-skeleton variant="text" [lines]="3" height="0.875rem" />
+          </div>
+          <div class="ds-stack" style="gap:var(--space-3)">
+            <p class="ds-showcase-label">Carta de perfil</p>
+            <div class="ds-row ds-row--align-center" style="gap:var(--space-3)">
+              <st-skeleton variant="circle" width="48px" />
+              <div style="flex:1">
+                <st-skeleton variant="text" [lines]="2" height="0.875rem" />
+              </div>
+            </div>
+          </div>
+          <div class="ds-stack" style="gap:var(--space-3)">
+            <p class="ds-showcase-label">Imagen rect</p>
+            <st-skeleton variant="rect" width="100%" height="140px" />
+          </div>
+          <div class="ds-stack" style="gap:var(--space-3)">
+            <p class="ds-showcase-label">Tabla skeleton</p>
+            <st-skeleton variant="text" [lines]="4" height="2rem" />
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StEmptyStateComponent</h2>
+        <div class="ds-section__body ds-grid-2">
+          <div class="ds-card-preview">
+            <st-empty-state icon="pi-calendar-times" title="Sin citas hoy"
+              message="No hay citas programadas para el día de hoy."
+              actionLabel="Nueva cita" />
+          </div>
+          <div class="ds-card-preview">
+            <st-empty-state icon="pi-search" title="Sin resultados"
+              message="No se encontraron registros que coincidan con tu búsqueda." />
+          </div>
+        </div>
+      </section>
+
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- DATOS                                                       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'data') {
+    <div class="ds-sections">
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StAvatarComponent</h2>
+        <div class="ds-section__body">
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Tamaños</p>
+            <div class="ds-row ds-row--align-center">
+              <st-avatar name="María García" size="xs" />
+              <st-avatar name="Carlos López" size="sm" />
+              <st-avatar name="Ana Torres" size="md" />
+              <st-avatar name="Juan Pérez" size="lg" />
+              <st-avatar name="Laura Díaz" size="xl" />
+            </div>
+          </div>
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Distintos nombres (paleta automática)</p>
+            <div class="ds-row ds-row--align-center">
+              <st-avatar name="María García" />
+              <st-avatar name="Carlos López" />
+              <st-avatar name="Ana Torres" />
+              <st-avatar name="Roberto Silva" />
+              <st-avatar name="Valentina Cruz" />
+              <st-avatar name="Diego Morales" />
+              <st-avatar name="Sofía Reyes" />
+              <st-avatar name="Nicolás Vargas" />
+            </div>
+          </div>
+          <div class="ds-showcase-group">
+            <p class="ds-showcase-label">Con color override</p>
+            <div class="ds-row ds-row--align-center">
+              <st-avatar name="AS" color="var(--color-accent)" />
+              <st-avatar name="OK" color="var(--color-success)" />
+              <st-avatar name="WA" color="var(--color-warning)" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StStatCardComponent</h2>
+        <div class="ds-section__body ds-grid-4">
+          <st-stat-card label="Citas hoy" value="24" icon="pi-calendar"
+            [trend]="12.5" trendLabel="vs ayer" variant="accent" />
+          <st-stat-card label="Profesionales" value="8" icon="pi-users"
+            variant="info" />
+          <st-stat-card label="Ingresos" value="$1,240" icon="pi-dollar"
+            [trend]="-3.2" trendLabel="vs semana" variant="success" />
+          <st-stat-card label="Cancelaciones" value="3" icon="pi-times-circle"
+            [trend]="0" trendLabel="sin cambio" variant="warning" />
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StProgressBarComponent</h2>
+        <div class="ds-section__body ds-stack">
+          <st-progress-bar label="Ocupación del día" [value]="progress()" variant="default" />
+          <st-progress-bar label="Capacidad" [value]="78" variant="success" size="lg" />
+          <st-progress-bar label="Carga de profesionales" [value]="45" variant="warning" />
+          <st-progress-bar label="Límite de plan" [value]="91" variant="danger" />
+          <st-progress-bar label="Animado" [value]="60" [animated]="true" variant="default" />
+          <div class="ds-row ds-row--align-center" style="gap:var(--space-3)">
+            <st-button label="-" variant="ghost" size="sm" (onClick)="progress.set(Math.max(0, progress() - 10))" />
+            <span class="text-muted text-sm" style="min-width:2.5rem;text-align:center">{{ progress() }}%</span>
+            <st-button label="+" variant="ghost" size="sm" (onClick)="progress.set(Math.min(100, progress() + 10))" />
+          </div>
+        </div>
+      </section>
+
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- NAVEGACIÓN                                                  -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'navigation') {
+    <div class="ds-sections">
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StTabsComponent · variant="line"</h2>
+        <div class="ds-section__body">
+          <st-tabs [tabs]="innerTabs" [(active)]="innerActive" variant="line" />
+          <div class="ds-tab-content">
+            @switch (innerActive()) {
+              @case ('a') { <p class="text-muted">Contenido de <strong>General</strong></p> }
+              @case ('b') { <p class="text-muted">Contenido de <strong>Horarios</strong></p> }
+              @case ('c') { <p class="text-muted">Contenido de <strong>Notas</strong> (badge: 3)</p> }
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StTabsComponent · variant="pills"</h2>
+        <div class="ds-section__body">
+          <st-tabs [tabs]="pillTabs" [(active)]="pillActive" variant="pills" />
+          <div class="ds-tab-content">
+            <p class="text-muted">Vista: <strong>{{ pillActive() }}</strong></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StPaginatorComponent</h2>
+        <div class="ds-section__body">
+          <p class="text-muted text-sm" style="margin-bottom:var(--space-2)">
+            Total: {{ total }} registros · {{ pageSize }} por página
+          </p>
+          <div class="ds-card-preview ds-card-preview--pad0">
+            <st-paginator [total]="total" [page]="page()" [pageSize]="pageSize"
+              (pageChange)="page.set($event)" />
+          </div>
+        </div>
+      </section>
+
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- OVERLAYS                                                    -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  @if (activeSection() === 'overlays') {
+    <div class="ds-sections">
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StModalComponent</h2>
+        <div class="ds-section__body">
+          <p class="text-muted text-sm" style="margin-bottom:var(--space-4)">
+            Modal con header, body via ng-content y cierre por ESC / overlay / botón X.
+          </p>
+          <st-button label="Abrir modal" icon="pi-window-maximize" (onClick)="showModal.set(true)" />
+
+          <st-modal header="Ejemplo de modal" [(visible)]="showModal" width="500px">
+            <div class="modal-form" [formGroup]="demoForm">
+              <st-input label="Nombre" placeholder="Nombre completo" formControlName="email" />
+              <st-select label="Rol" placeholder="Seleccionar..." [options]="rolOptions"
+                formControlName="rol" />
+              <st-alert severity="info" message="Los cambios se guardarán inmediatamente." />
+              <div class="modal-actions">
+                <st-button label="Cancelar" variant="secondary" (onClick)="showModal.set(false)" />
+                <st-button label="Guardar" type="button" (onClick)="showModal.set(false)" />
+              </div>
+            </div>
+          </st-modal>
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StConfirmDialogComponent</h2>
+        <div class="ds-section__body">
+          <p class="text-muted text-sm" style="margin-bottom:var(--space-4)">
+            Para acciones destructivas. El padre controla el cierre — permite mostrar loading.
+          </p>
+          <st-button label="Eliminar elemento" variant="danger" icon="pi-trash"
+            (onClick)="showConfirm.set(true)" />
+
+          <st-confirm-dialog
+            [(visible)]="showConfirm"
+            title="Eliminar profesional"
+            message="¿Estás seguro de eliminar a María García? Esta acción no se puede deshacer."
+            confirmLabel="Sí, eliminar"
+            variant="danger"
+            [loading]="confirmLoad()"
+            (confirmed)="onConfirm()"
+          />
+        </div>
+      </section>
+
+      <section class="ds-section">
+        <h2 class="ds-section__title">StEmptyStateComponent · en contexto</h2>
+        <div class="ds-section__body">
+          <div class="ds-card-preview">
+            <st-empty-state
+              icon="pi-users"
+              title="Sin profesionales"
+              message="Aún no has agregado profesionales a tu equipo. Empieza creando el primero."
+              actionLabel="Agregar profesional"
+            />
+          </div>
+        </div>
+      </section>
+
+    </div>
+  }
+
+</div>

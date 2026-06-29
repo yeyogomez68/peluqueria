@@ -1,0 +1,66 @@
+:host { display: block; }
+
+.st-progress__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.st-progress__label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-2);
+}
+
+.st-progress__value {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-1);
+}
+
+.st-progress__track {
+  width: 100%;
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+
+  &--sm { height: 4px;  }
+  &--md { height: 8px;  }
+  &--lg { height: 12px; }
+}
+
+.st-progress__fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.5s var(--easing-default);
+
+  &--default { background: var(--color-accent);   }
+  &--success { background: var(--color-success);  }
+  &--warning { background: var(--color-warning);  }
+  &--danger  { background: var(--color-danger);   }
+
+  &--animated {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: progress-shimmer 1.5s infinite;
+    }
+  }
+}
+
+@keyframes progress-shimmer {
+  0%   { background-position: 200% 0;  }
+  100% { background-position: -200% 0; }
+}

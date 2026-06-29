@@ -1,0 +1,138 @@
+<div class="list-page">
+  <div class="list-header">
+    <div>
+      <h1>Profesionales</h1>
+      <p class="text-muted text-sm">Equipo de trabajo del salón</p>
+    </div>
+    <st-button label="Nuevo profesional" icon="pi-plus" (onClick)="abrirFormulario()" />
+  </div>
+
+  <div class="list-card">
+    @if (loading()) {
+      <div class="table-loading">
+        <span class="spinner"></span>
+        <span class="text-muted text-sm">Cargando profesionales…</span>
+      </div>
+    } @else if (profesionales().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-users empty-state__icon"></i>
+        <p>No hay profesionales registrados</p>
+        <st-button label="Agregar profesional" variant="secondary" (onClick)="abrirFormulario()" />
+      </div>
+    } @else {
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Especialidad</th>
+            <th>Horarios</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of profesionales(); track p.id) {
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.5rem;">
+                  <div class="color-dot" [style.background]="p.colorAgenda ?? '#6366f1'"></div>
+                  <span class="table-primary">{{ p.nombre }}</span>
+                </div>
+              </td>
+              <td>{{ p.especialidad || '—' }}</td>
+              <td><span class="text-muted text-sm">{{ horariosResumen(p) }}</span></td>
+              <td>
+                <st-badge [label]="p.activo ? 'Activo' : 'Inactivo'" [variant]="p.activo ? 'success' : 'default'" />
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button class="action-btn" type="button" (click)="abrirEdicion(p)" title="Editar">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button class="action-btn" [class.action-btn--danger]="p.activo" type="button" (click)="toggleEstado(p)" [title]="p.activo ? 'Desactivar' : 'Activar'">
+                    <i [class]="'pi ' + (p.activo ? 'pi-eye-slash' : 'pi-eye')"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+<st-modal [visible]="showForm()" [header]="modoEdicion ? 'Editar Profesional' : 'Nuevo Profesional'" (visibleChange)="showForm.set($any($event))" width="min(680px, 100%)">
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="modal-form">
+
+    <div class="form-row-2">
+      <st-input label="Nombre" placeholder="Ej: María García" formControlName="nombre" [required]="true" />
+      <st-input label="Especialidad" placeholder="Ej: Colorista" formControlName="especialidad" />
+    </div>
+
+    @if (!modoEdicion) {
+      <div class="form-row-2">
+        <st-input label="Email de acceso" type="email" placeholder="profesional@salon.com" formControlName="email" [required]="true" />
+        <st-input label="Contraseña inicial" type="password" placeholder="Mín. 6 caracteres" formControlName="password" [required]="true" />
+      </div>
+    }
+
+    <st-input label="Bio" placeholder="Descripción breve" formControlName="bio" />
+    <st-input label="Color en agenda" type="color" formControlName="colorAgenda" />
+
+    <div class="horarios-section">
+      <div class="horarios-header">
+        <span class="form-section-label">Horarios</span>
+        <st-button label="Añadir día" icon="pi-plus" variant="ghost" size="sm" type="button" (onClick)="agregarHorario()" />
+      </div>
+
+      <!-- Rango rápido -->
+      <div class="rango-rapido" [formGroup]="rangoForm">
+        <div class="rango-title">
+          <i class="pi pi-bolt"></i>
+          <span>Rango rápido de días</span>
+        </div>
+        <div class="rango-dias">
+          <div class="rango-field">
+            <span class="rango-field-label">Desde</span>
+            <st-select [options]="diasSemana" formControlName="diaDesde" placeholder="" />
+          </div>
+          <span class="rango-arrow">→</span>
+          <div class="rango-field">
+            <span class="rango-field-label">Hasta</span>
+            <st-select [options]="diasSemana" formControlName="diaHasta" placeholder="" />
+          </div>
+        </div>
+        <div class="rango-horas">
+          <div class="rango-field">
+            <span class="rango-field-label">Entrada</span>
+            <st-input type="time" formControlName="horaInicio" />
+          </div>
+          <span class="rango-arrow">–</span>
+          <div class="rango-field">
+            <span class="rango-field-label">Salida</span>
+            <st-input type="time" formControlName="horaFin" />
+          </div>
+          <st-button label="Aplicar rango" icon="pi-check" variant="secondary" size="sm" type="button" (onClick)="aplicarRango()" />
+        </div>
+      </div>
+
+      <!-- Horarios individuales -->
+      @for (horario of horariosArray.controls; track $index) {
+        <div class="horario-row" [formGroup]="$any(horario)">
+          <st-select placeholder="Día" [options]="diasSemana" formControlName="diaSemana" [required]="true" />
+          <st-input placeholder="Inicio" type="time" formControlName="horaInicio" [required]="true" />
+          <st-input placeholder="Fin" type="time" formControlName="horaFin" [required]="true" />
+          <button class="horario-delete" type="button" (click)="eliminarHorario($index)" title="Eliminar">
+            <i class="pi pi-trash"></i>
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="modal-actions">
+      <st-button label="Cancelar" variant="ghost" type="button" (onClick)="showForm.set(false)" />
+      <st-button [label]="modoEdicion ? 'Guardar cambios' : 'Crear profesional'" type="submit" [loading]="saving()" [disabled]="form.invalid" />
+    </div>
+  </form>
+</st-modal>

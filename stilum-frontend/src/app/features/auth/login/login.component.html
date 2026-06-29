@@ -1,0 +1,91 @@
+<div class="login-page">
+
+  <!-- Panel decorativo izquierdo -->
+  <div class="login-visual">
+    <div class="login-visual__content">
+      <div class="login-logo">
+        <div class="logo-mark">S</div>
+        <span class="logo-name">Stilum</span>
+      </div>
+      <blockquote class="login-quote">
+        <p>"La excelencia en cada cita,<br>la eficiencia en cada gestión."</p>
+      </blockquote>
+      <div class="login-dots">
+        <span class="dot dot--active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="login-form-wrap">
+    <div class="login-card">
+      <div class="login-card__header">
+        <h1>Bienvenido</h1>
+        <p class="text-muted">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="login-form">
+
+        <st-input
+          label="Correo electrónico"
+          placeholder="tu@email.com"
+          type="email"
+          icon="pi-envelope"
+          formControlName="email"
+          [required]="true"
+          [hasError]="form.controls.email.invalid && form.controls.email.touched"
+          errorMsg="Ingresa un correo válido"
+        />
+
+        <st-input
+          label="Contraseña"
+          placeholder="••••••••"
+          type="password"
+          icon="pi-lock"
+          formControlName="password"
+          [required]="true"
+          [hasError]="form.controls.password.invalid && form.controls.password.touched"
+          errorMsg="La contraseña es requerida"
+        />
+
+        @if (errorMsg()) {
+          <div class="login-error">
+            <i class="pi pi-exclamation-circle"></i>
+            <span>{{ errorMsg() }}</span>
+          </div>
+        }
+
+        <st-button
+          label="Ingresar"
+          type="submit"
+          [loading]="loading()"
+          [disabled]="form.invalid"
+          [fullWidth]="true"
+          size="lg"
+        />
+
+      </form>
+
+      <div class="login-divider">
+        <span>o</span>
+      </div>
+
+      <st-button
+        label="Explorar en modo demo"
+        icon="pi-play"
+        variant="secondary"
+        [fullWidth]="true"
+        size="lg"
+        [loading]="demoLoading()"
+        (onClick)="enterDemo()"
+      />
+
+      <p class="demo-hint">
+        <i class="pi pi-info-circle"></i>
+        Accede sin backend con datos de ejemplo
+      </p>
+    </div>
+  </div>
+</div>

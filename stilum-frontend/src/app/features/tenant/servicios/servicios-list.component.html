@@ -1,0 +1,79 @@
+<div class="list-page">
+  <div class="list-header">
+    <div>
+      <h1>Servicios</h1>
+      <p class="text-muted text-sm">Catálogo de servicios del salón</p>
+    </div>
+    <st-button label="Nuevo servicio" icon="pi-plus" (onClick)="abrirCrear()" />
+  </div>
+
+  <div class="list-card">
+    @if (loading()) {
+      <div class="table-loading">
+        <span class="spinner"></span>
+        <span class="text-muted text-sm">Cargando servicios…</span>
+      </div>
+    } @else if (servicios().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-list empty-state__icon"></i>
+        <p>No hay servicios registrados</p>
+        <st-button label="Crear primer servicio" variant="secondary" (onClick)="abrirCrear()" />
+      </div>
+    } @else {
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Duración</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of servicios(); track s.id) {
+            <tr>
+              <td>
+                <span class="table-primary">{{ s.nombre }}</span>
+                @if (s.descripcion) { <span class="table-secondary">{{ s.descripcion }}</span> }
+              </td>
+              <td><span class="chip">{{ s.duracionMin }} min</span></td>
+              <td>{{ s.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+              <td>
+                <st-badge [label]="s.activo ? 'Activo' : 'Inactivo'" [variant]="s.activo ? 'success' : 'default'" />
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button class="action-btn" type="button" (click)="abrirEditar(s)" title="Editar">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button class="action-btn" [class.action-btn--danger]="s.activo" type="button" (click)="toggleEstado(s)" [title]="s.activo ? 'Desactivar' : 'Activar'">
+                    <i [class]="'pi ' + (s.activo ? 'pi-eye-slash' : 'pi-eye')"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+<st-modal [visible]="showForm()" [header]="dialogHeader" (visibleChange)="showForm.set($any($event))">
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="modal-form">
+
+    <st-input label="Nombre" placeholder="Ej: Corte de cabello" formControlName="nombre" [required]="true" />
+    <st-input label="Descripción" placeholder="Descripción opcional" formControlName="descripcion" />
+
+    <div class="form-row-2">
+      <st-input label="Duración (min)" type="number" placeholder="30" formControlName="duracionMin" [required]="true" />
+      <st-input label="Precio (COP)" type="number" placeholder="50000" formControlName="precio" [required]="true" />
+    </div>
+
+    <div class="modal-actions">
+      <st-button label="Cancelar" variant="ghost" type="button" (onClick)="showForm.set(false)" />
+      <st-button [label]="editTarget() ? 'Guardar cambios' : 'Crear servicio'" type="submit" [loading]="saving()" [disabled]="form.invalid" />
+    </div>
+  </form>
+</st-modal>

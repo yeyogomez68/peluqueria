@@ -1,0 +1,91 @@
+<div class="list-page">
+  <div class="list-header">
+    <div>
+      <h1>Tenants</h1>
+      <p class="text-muted text-sm">Negocios registrados en la plataforma</p>
+    </div>
+    <st-button label="Nuevo tenant" icon="pi-plus" (onClick)="abrirFormulario()" />
+  </div>
+
+  <div class="list-card">
+    @if (loading()) {
+      <div class="table-loading">
+        <span class="spinner"></span>
+        <span class="text-muted text-sm">Cargando tenants…</span>
+      </div>
+    } @else if (tenants().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-building empty-state__icon"></i>
+        <p>No hay tenants registrados</p>
+        <st-button label="Crear primer tenant" variant="secondary" (onClick)="abrirFormulario()" />
+      </div>
+    } @else {
+      <table class="st-table">
+        <thead>
+          <tr>
+            <th>Negocio</th>
+            <th>Email</th>
+            <th>Ciudad</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of tenants(); track t.id) {
+            <tr>
+              <td>
+                <span class="table-primary">{{ t.nombreNegocio }}</span>
+              </td>
+              <td>{{ t.emailContacto }}</td>
+              <td>{{ t.ciudad || '—' }}</td>
+              <td>
+                <st-badge [label]="t.activo ? 'Activo' : 'Bloqueado'" [variant]="t.activo ? 'success' : 'danger'" />
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button class="action-btn" [class.action-btn--danger]="t.activo" type="button" (click)="toggleEstado(t)" [title]="t.activo ? 'Bloquear' : 'Activar'">
+                    <i [class]="'pi ' + (t.activo ? 'pi-ban' : 'pi-check-circle')"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
+
+<st-modal [visible]="showForm()" header="Nuevo Tenant" width="560px" (visibleChange)="showForm.set($any($event))">
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate class="modal-form">
+
+    <div class="form-row-2">
+      <st-input label="Nombre del negocio" placeholder="Peluquería XYZ" formControlName="nombreNegocio" [required]="true" />
+      <st-input label="Email de contacto" type="email" placeholder="admin@negocio.com" formControlName="emailContacto" [required]="true" />
+    </div>
+
+    <div class="form-row-2">
+      <st-input label="Teléfono" placeholder="3001234567" formControlName="telefonoContacto" />
+      <st-input label="Ciudad" placeholder="Bogotá" formControlName="ciudad" />
+    </div>
+
+    <div class="form-row-2">
+      <st-input label="País" placeholder="Colombia" formControlName="pais" />
+      <st-select label="Plan" [options]="planOptions()" formControlName="planId" [required]="true" />
+    </div>
+
+    <hr class="tenant-divider" />
+
+    <div class="form-section-label">Administrador del negocio</div>
+
+    <div class="form-row-2">
+      <st-input label="Nombre del admin" placeholder="Juan Pérez" formControlName="adminNombre" [required]="true" />
+      <st-input label="Contraseña" type="password" placeholder="••••••••" formControlName="adminPassword" [required]="true" />
+    </div>
+
+    <div class="modal-actions">
+      <st-button label="Cancelar" variant="ghost" type="button" (onClick)="showForm.set(false)" />
+      <st-button label="Crear tenant" type="submit" [loading]="saving()" [disabled]="form.invalid" />
+    </div>
+  </form>
+</st-modal>

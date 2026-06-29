@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/PC/.claude/plugins/**)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\PC\\\\OneDrive\\\\Documentos\\\\Claude\\\\Projects\\\\Sistema de citas Peluqueria\\\\stilum-frontend\\\\docs\\\\superpowers\\\\skills\\\\stilum-design-system\")",
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\PC\\\\OneDrive\\\\Documentos\\\\Claude\\\\Projects\\\\Sistema de citas Peluqueria\\\\stilum-frontend\\\\docs\\\\superpowers\\\\skills\\\\stilum-design-system\\\\SKILL.md\" | Measure-Object -Line\\).Lines)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"c:\\\\Users\\\\PC\\\\OneDrive\\\\Documentos\\\\Claude\\\\Projects\\\\Sistema de citas Peluqueria\\\\stilum-frontend\\\\src\\\\app\\\\features\\\\design-system\")"
+    ]
+  }
+}

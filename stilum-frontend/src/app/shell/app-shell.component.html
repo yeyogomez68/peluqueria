@@ -1,0 +1,92 @@
+@if (isDemo()) {
+  <div class="demo-banner">
+    <i class="pi pi-play-circle"></i>
+    <span>Modo demo — los datos son ficticios y los cambios no se guardan</span>
+    <button class="demo-banner__exit" type="button" (click)="exitDemo()">Salir del demo</button>
+  </div>
+}
+
+<div class="shell" [class.shell--collapsed]="collapsed()" [class.shell--mobile-open]="mobileOpen()">
+
+  <!-- Overlay móvil -->
+  <div class="sidebar-overlay" (click)="closeMobile()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <div class="logo-mark">S</div>
+      @if (!collapsed()) {
+        <span class="logo-text">Stilum</span>
+      }
+    </div>
+
+    <nav class="sidebar__nav">
+      @for (item of navItems(); track item.route) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="nav-item--active"
+          (click)="closeMobile()"
+        >
+          <i [class]="'pi ' + item.icon + ' nav-item__icon'"></i>
+          @if (!collapsed()) {
+            <span class="nav-item__label">{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar__footer">
+      <button class="collapse-btn" type="button" (click)="toggleSidebar()">
+        <i [class]="'pi ' + (collapsed() ? 'pi-chevron-right' : 'pi-chevron-left')"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main area -->
+  <div class="main-wrapper">
+
+    <header class="header">
+      <!-- Hamburger — solo móvil -->
+      <button class="mobile-menu-btn" type="button" (click)="toggleMobile()" aria-label="Menú">
+        <i [class]="'pi ' + (mobileOpen() ? 'pi-times' : 'pi-bars')"></i>
+      </button>
+
+      <span class="header__tenant">{{ user()?.tenantNombre ?? 'Stilum Pro' }}</span>
+
+      <div class="header__actions">
+        <button class="icon-btn" type="button" (click)="toggleTheme()" [title]="isDark() ? 'Tema claro' : 'Tema oscuro'">
+          <i [class]="'pi ' + (isDark() ? 'pi-sun' : 'pi-moon')"></i>
+        </button>
+
+        <div class="user-menu">
+          <button class="user-trigger" type="button" (click)="userMenuOpen.update(v => !v)">
+            <div class="user-avatar">{{ userInitials }}</div>
+            <span class="user-name">{{ user()?.nombre?.split(' ')?.[0] }}</span>
+            <i class="pi pi-chevron-down user-chevron"></i>
+          </button>
+
+          @if (userMenuOpen()) {
+            <div class="user-dropdown">
+              <div class="user-dropdown__info">
+                <span class="user-dropdown__name">{{ user()?.nombre }}</span>
+                <span class="user-dropdown__role text-muted text-xs">{{ user()?.rol }}</span>
+              </div>
+              <hr class="user-dropdown__sep" />
+              <button class="user-dropdown__item user-dropdown__item--danger" type="button" (click)="logout()">
+                <i class="pi pi-sign-out"></i>
+                Cerrar sesión
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+
+<st-toast />
