@@ -1,6 +1,7 @@
 package com.stilum.citas.application.profesional.dto;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -10,6 +11,12 @@ public record CreateProfesionalRequest(
 
         @NotBlank @Size(max = 100)
         String nombre,
+
+        @NotBlank @Email @Size(max = 150)
+        String email,
+
+        @NotBlank @Size(min = 6, max = 100)
+        String password,
 
         @Size(max = 150)
         String especialidad,

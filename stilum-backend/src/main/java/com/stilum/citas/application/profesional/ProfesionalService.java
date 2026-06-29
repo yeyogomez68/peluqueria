@@ -17,7 +17,11 @@ import com.stilum.citas.domain.subscription.Subscription;
 import com.stilum.citas.domain.subscription.SubscriptionRepository;
 import com.stilum.citas.domain.tenant.Tenant;
 import com.stilum.citas.domain.tenant.TenantRepository;
+import com.stilum.citas.domain.user.User;
+import com.stilum.citas.domain.user.UserRepository;
+import com.stilum.citas.domain.user.UserRol;
 import com.stilum.citas.infrastructure.security.TenantContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,15 +43,21 @@ public class ProfesionalService {
     private final TenantRepository tenantRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final CitaRepository citaRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public ProfesionalService(ProfesionalRepository profesionalRepository,
                               TenantRepository tenantRepository,
                               SubscriptionRepository subscriptionRepository,
-                              CitaRepository citaRepository) {
+                              CitaRepository citaRepository,
+                              UserRepository userRepository,
+                              PasswordEncoder passwordEncoder) {
         this.profesionalRepository = profesionalRepository;
         this.tenantRepository = tenantRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.citaRepository = citaRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /** Lista todos los profesionales del tenant (activos e inactivos). */
@@ -93,6 +103,11 @@ public class ProfesionalService {
                             + sub.getPlan().getMaxProfesionales() + " profesionales activos");
         }
 
+        if (userRepository.existsByEmail(req.email())) {
+            throw new ConflictoException("EMAIL_DUPLICADO",
+                    "Ya existe un usuario con el email " + req.email());
+        }
+
         Profesional p = Profesional.crear(tenant, req.nombre(), req.especialidad(),
                 req.bio(), req.colorAgenda());
 
@@ -103,7 +118,13 @@ public class ProfesionalService {
             ));
         }
 
-        return ProfesionalResponse.from(profesionalRepository.save(p));
+        profesionalRepository.save(p);
+
+        User user = User.crearParaTenant(tenant, req.nombre(), req.email(),
+                passwordEncoder.encode(req.password()), UserRol.PROFESIONAL);
+        userRepository.save(user);
+
+        return ProfesionalResponse.from(p);
     }
 
     /** Actualiza datos y horarios de un profesional. */
